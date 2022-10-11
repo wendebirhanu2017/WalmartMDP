@@ -1,21 +1,18 @@
 package com.example.walmartmdp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.android.synthetic.main.activity_login.*
 
 
 class Login : AppCompatActivity() {
-    private lateinit var edtEmail: EditText
-    private lateinit var edtPassword: EditText
-    private lateinit var txtForgot: TextView
-    private lateinit var btnSignIn: Button
-    private lateinit var txtCreate: TextView
+
     private var user = ArrayList<User>(listOf(
         User("wende", "kebe", "wendmagegn.b@gmail.com", "pss"),
         User("taye", "wube", "taye@gmail.com", "pss"),
@@ -27,28 +24,39 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        edtEmail = emailEdit;
-        edtPassword = passwordEdit
-        txtForgot = forgotTxt
-        btnSignIn = signInBtn
-        txtCreate = createTxt
+        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
 
-        txtCreate.setOnClickListener {
-            val intent = Intent(this, SignUp::class.java)
-            startActivity(intent)
-        }
-        btnSignIn.setOnClickListener {
-            val email = edtEmail.text.toString()
-            val pass = edtPassword.text.toString()
+                val first = result.data?.extras?.get("firstName").toString()
+                val last = result.data?.extras?.get("lastName").toString()
+                val em = result.data?.extras?.get("email").toString()
+                val pass = result.data?.extras?.get("password").toString()
 
+                val userNew = User(first,last,em,pass)
+                user.add(userNew)
 
-            val thisUser: User? = user.firstOrNull() { u: User ->
-                u.userName.equals(email)
             }
+        }
+
+
+        createTxt.setOnClickListener {
+            val intent = Intent(this, SignUp::class.java)
+            resultLauncher.launch(intent)
+        }
+
+
+
+        signInBtn.setOnClickListener {
+            val email = emailEdit.text.toString()
+            val pass = passwordEdit.text.toString()
+
+
+            val thisUser: User? = user.firstOrNull() { u -> u.userName==email }
 
             if (thisUser != null) {
-                if(thisUser.password.equals(pass)){
-                    val intent = Intent(this, SignUp::class.java)
+                if(thisUser.password==pass){
+                    val intent = Intent(this, Shopping::class.java)
+                    intent.putExtra("username", thisUser.userName)
                     startActivity(intent)
                 }
                 else Toast.makeText(this, "Invalid Password ", Toast.LENGTH_LONG).show()
@@ -58,4 +66,6 @@ class Login : AppCompatActivity() {
 
         }
     }
+
+
 }

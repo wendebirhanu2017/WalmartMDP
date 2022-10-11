@@ -109,6 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
+
         android:background="@drawable/btn_background"/>
 
     <TextView
@@ -124,20 +125,23 @@
         app:layout_constraintTop_toBottomOf="@+id/signInBtn"
         />
 
-    <TextView
+
+    <Button
         android:id="@+id/createTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:autoLink="all"
-        android:clickable="true"
-        android:minHeight="48dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/btn_background1"
         android:text="Create a new account"
+        android:textAllCaps="false"
         android:textColor="@color/walmart"
-        android:textSize="15dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/doNotTxt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
