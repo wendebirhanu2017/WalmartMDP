@@ -2,12 +2,11 @@ package com.example.walmartmdp
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -65,6 +64,27 @@ class Login : AppCompatActivity() {
             else Toast.makeText(this, "Invalid Username ", Toast.LENGTH_LONG).show()
 
         }
+
+        forgotTxt.setOnClickListener {
+            val thisUser: User? = user.firstOrNull() { u -> u.userName== "${emailEdit.text}" }
+            if (thisUser != null) {
+                val intent = Intent(Intent.ACTION_SEND, Uri.fromParts(
+                    "mailto", "${emailEdit.text}", null
+                )
+                )
+                intent.putExtra(Intent.EXTRA_SUBJECT, "password reset")
+                if (thisUser != null) {
+                    intent.putExtra(Intent.EXTRA_TEXT, "Your password is - ${thisUser.password}")
+                }
+                startActivity(intent)
+
+            }
+            else Toast.makeText(this, "Invalid Username/email ", Toast.LENGTH_LONG).show()
+
+        }
+
+
+
     }
 
 
